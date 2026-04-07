@@ -1,5 +1,6 @@
 aid: expedia
-url: https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml
+url: 
+  https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml
 modified: '2026-03-21'
 apis:
   - aid: expedia:expedia-api
@@ -10,7 +11,8 @@ apis:
       - Flights
       - Bookings
       - Affiliate
-    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    image: 
+      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://developers.expediagroup.com
     humanURL: https://developers.expediagroup.com/
     properties:
@@ -19,4 +21,10 @@ apis:
       - url: openapi/expedia-expedia-api-openapi.yml
         type: OpenAPI
     description: >-
-      Expedia Group provides APIs for hotel, flight, and vacation rental bookings, as well as property management and affiliate marketing. The Rapid API enables partners to access Expedia's travel inventory.
+      Expedia Group provides APIs for hotel, flight, and vacation rental bookings,
+      as well as property management and affiliate marketing. The Rapid API enables
+      partners to access Expedia's travel inventory.
+description: >-
+  Expedia Group is one of the world's leading travel platforms, helping travelers
+  plan and book trips through a portfolio of brands including Expedia, Hotels.com,
+  Vrbo, Orbitz, Travelocity, Hotwire, Wotif, and trivago.
