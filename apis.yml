@@ -1,18 +1,16 @@
 aid: expedia
-url: 
-  https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml
+url: https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml
 modified: '2026-03-21'
 apis:
   - aid: expedia:expedia-api
     name: Expedia Developer API
     tags:
-      - Travel
-      - Hotels
-      - Flights
-      - Bookings
       - Affiliate
-    image: 
-      https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+      - Bookings
+      - Flights
+      - Hotels
+      - Travel
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://developers.expediagroup.com
     humanURL: https://developers.expediagroup.com/
     properties:
