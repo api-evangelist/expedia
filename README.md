@@ -1,46 +1,39 @@
 # Expedia (expedia)
-Expedia is a Fortune 500 company that provides developer APIs and integration capabilities through its developer platform. Expedia Group provides APIs for hotel, flight, and vacation rental bookings, as well as property management and affiliate marketing. The Rapid API enables partners to access Expedia's travel inventory.
+Expedia is one of the world's leading travel platforms, helping travelers plan and book trips through a portfolio of brands including Expedia, Hotels.com, Vrbo, Orbitz, Travelocity, Hotwire, Wotif, and trivago. Developer APIs are published under the Expedia Group developer platform; this repository serves as a brand alias pointing to the canonical expedia-group catalog.
 
 **URL:** [Visit APIs.json URL](https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml)
 
 ## Scope
 
-- **Type:** Contract
+- **Type:** Index
 - **Position:** Consuming
 - **Access:** 3rd-Party
 
 ## Tags:
 
- - Travel, Hotels, Flights, Bookings, Affiliate
+ - Travel, Hotels, Flights, Lodging
 
 ## Timestamps
 
 - **Created:** 2026-03-21
-- **Modified:** 2026-03-21
+- **Modified:** 2026-04-28
 
 ## APIs
 
-### Expedia Developer API
-Expedia Group provides APIs for hotel, flight, and vacation rental bookings, as well as property management and affiliate marketing. The Rapid API enables partners to access Expedia's travel inventory.
+This repository is a brand alias for Expedia Group. The canonical catalog of Expedia developer APIs (Rapid, Fraud Protection, Lodging, EPS Deposit, Loyalty Earn) lives at [api-evangelist/expedia-group](https://github.com/api-evangelist/expedia-group).
 
-**Human URL:** [https://developers.expediagroup.com/](https://developers.expediagroup.com/)
+## Included Catalogs
 
-
-#### Tags:
-
- - Travel, Hotels, Flights, Bookings, Affiliate
-
-#### Properties
-
-- [Documentation](https://developers.expediagroup.com/)
-- [OpenAPI](openapi/expedia-expedia-api-openapi.yml)
+- [Expedia Group](https://raw.githubusercontent.com/api-evangelist/expedia-group/refs/heads/main/apis.yml)
 
 ## Common Properties
 
 - [Website](https://www.expedia.com)
+- [Developer Portal](https://developers.expediagroup.com/)
+- [Canonical Catalog](https://github.com/api-evangelist/expedia-group)
 
 ## Maintainers
 
-**FN:** API Evangelist
+**FN:** Kin Lane
 
-**Email:** info@apievangelist.com
+**Email:** kin@apievangelist.com
