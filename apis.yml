@@ -25,6 +25,8 @@ include:
   - name: Expedia Group
     url: https://raw.githubusercontent.com/api-evangelist/expedia-group/refs/heads/main/apis.yml
 common:
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/expediagroup
   - type: Website
     url: https://www.expedia.com
   - type: Developer Portal
