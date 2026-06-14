@@ -1,0 +1,1142 @@
+"""
+Expedia GraphQL Schema
+Conceptual schema derived from the Expedia Group RAPID API and developer platform.
+Developer Portal: https://developers.expediagroup.com/
+GitHub: https://github.com/ExpediaGroup
+"""
+
+# ─────────────────────────────────────────────
+# Scalars
+# ─────────────────────────────────────────────
+
+scalar Date
+scalar DateTime
+scalar Decimal
+scalar URL
+
+# ─────────────────────────────────────────────
+# Enums
+# ─────────────────────────────────────────────
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  FAILED
+}
+
+enum RoomBedType {
+  KING
+  QUEEN
+  DOUBLE
+  TWIN
+  SINGLE
+  SOFA_BED
+  BUNK
+}
+
+enum CabinClass {
+  ECONOMY
+  PREMIUM_ECONOMY
+  BUSINESS
+  FIRST
+}
+
+enum CarCategory {
+  MINI
+  ECONOMY
+  COMPACT
+  MIDSIZE
+  STANDARD
+  FULL_SIZE
+  SUV
+  MINIVAN
+  LUXURY
+  CONVERTIBLE
+}
+
+enum PaymentMethod {
+  CREDIT_CARD
+  DEBIT_CARD
+  POINTS
+  VOUCHER
+  BANK_TRANSFER
+}
+
+enum ReviewSentiment {
+  POSITIVE
+  NEUTRAL
+  NEGATIVE
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+  VIRTUAL_TOUR
+}
+
+enum CancellationRefundType {
+  FULL_REFUND
+  PARTIAL_REFUND
+  NO_REFUND
+}
+
+# ─────────────────────────────────────────────
+# Currency and Money
+# ─────────────────────────────────────────────
+
+"""ISO 4217 currency representation."""
+type Currency {
+  code: String!
+  name: String!
+  symbol: String!
+  decimalPlaces: Int!
+}
+
+"""A monetary amount in a specific currency."""
+type Money {
+  amount: Decimal!
+  currency: Currency!
+  formatted: String!
+}
+
+# ─────────────────────────────────────────────
+# Property / Lodging
+# ─────────────────────────────────────────────
+
+"""A lodging property such as a hotel, resort, or vacation rental."""
+type Property {
+  id: ID!
+  name: String!
+  type: String
+  starRating: Float
+  guestRating: Float
+  reviewCount: Int
+  description: String
+  address: String
+  city: String
+  stateProvince: String
+  country: String
+  postalCode: String
+  latitude: Float
+  longitude: Float
+  phone: String
+  email: String
+  website: URL
+  checkInTime: String
+  checkOutTime: String
+  amenities: [Amenity!]
+  media: [Media!]
+  rooms: [Room!]
+  reviewSummary: ReviewSummary
+  policies: String
+  chainCode: String
+  brandName: String
+}
+
+"""A hotel property — a subtype of Property with chain-specific fields."""
+type Hotel {
+  id: ID!
+  property: Property!
+  hotelCode: String
+  chainCode: String
+  brandCode: String
+  nativeRooms: [RoomType!]
+  ratePlans: [RatePlan!]
+  hotelFees: [Fee!]
+}
+
+"""A bookable guest room at a property."""
+type Room {
+  id: ID!
+  property: Property!
+  roomType: RoomType!
+  name: String!
+  description: String
+  maxOccupancy: Int
+  bedTypes: [RoomBedType!]
+  squareFootage: Float
+  floor: Int
+  smokingAllowed: Boolean
+  accessibleFeatures: [String!]
+  amenities: [Amenity!]
+  media: [Media!]
+  rates: [Rate!]
+}
+
+"""A category or class of room available at a property."""
+type RoomType {
+  id: ID!
+  code: String!
+  name: String!
+  description: String
+  category: String
+  bedConfigurations: [String!]
+  maxOccupancy: Int
+  squareFootage: Float
+}
+
+"""A rate plan defining pricing rules for a room or property."""
+type RatePlan {
+  id: ID!
+  code: String!
+  name: String!
+  description: String
+  refundable: Boolean!
+  breakfastIncluded: Boolean
+  parkingIncluded: Boolean
+  cancellationPolicy: CancellationPolicy
+  depositRequired: Boolean
+  prepayRequired: Boolean
+  minimumStay: Int
+  maximumStay: Int
+}
+
+"""A priced rate for a specific room and date range."""
+type Rate {
+  id: ID!
+  room: Room!
+  ratePlan: RatePlan!
+  checkIn: Date!
+  checkOut: Date!
+  nightlyRate: Money!
+  totalRate: Money!
+  taxes: [Tax!]
+  fees: [Fee!]
+  totalWithTaxesAndFees: Money!
+  availability: Int
+  promotionApplied: Boolean
+  promotionDescription: String
+}
+
+"""A tax applied to a booking or rate."""
+type Tax {
+  id: ID!
+  type: String!
+  name: String!
+  amount: Money!
+  percentage: Decimal
+  inclusive: Boolean!
+}
+
+"""A fee charged by a property or platform."""
+type Fee {
+  id: ID!
+  type: String!
+  name: String!
+  amount: Money!
+  mandatory: Boolean!
+  payableAtProperty: Boolean!
+}
+
+# ─────────────────────────────────────────────
+# Availability and Search
+# ─────────────────────────────────────────────
+
+"""Availability status for a single room on a single date."""
+type Availability {
+  roomId: ID!
+  date: Date!
+  available: Boolean!
+  remainingCount: Int
+  minStay: Int
+  closedToArrival: Boolean
+  closedToDeparture: Boolean
+}
+
+"""Availability data across a date range."""
+type AvailabilityRange {
+  roomId: ID!
+  checkIn: Date!
+  checkOut: Date!
+  nights: Int!
+  available: Boolean!
+  lowestRate: Money
+  dailyAvailability: [Availability!]
+}
+
+"""Search criteria for a property or room search."""
+input SearchCriteria {
+  destination: String
+  latitude: Float
+  longitude: Float
+  radiusKm: Float
+  checkIn: Date!
+  checkOut: Date!
+  adults: Int!
+  children: Int
+  childAges: [Int!]
+  rooms: Int
+  currency: String
+  language: String
+  propertyType: String
+  starRatings: [Int!]
+  amenityIds: [ID!]
+  maxPrice: Decimal
+  minGuestRating: Float
+  sortBy: String
+  sortOrder: String
+  page: Int
+  pageSize: Int
+}
+
+"""A single property result returned in a search."""
+type SearchResult {
+  property: Property!
+  lowestRate: Money
+  lowestTotalRate: Money
+  availableRooms: Int
+  featured: Boolean
+  sponsored: Boolean
+  distanceKm: Float
+}
+
+"""Paginated results from a property search."""
+type PropertySearch {
+  criteria: String
+  totalResults: Int!
+  page: Int!
+  pageSize: Int!
+  totalPages: Int!
+  results: [SearchResult!]!
+}
+
+# ─────────────────────────────────────────────
+# Guests and Contacts
+# ─────────────────────────────────────────────
+
+"""A guest traveler."""
+type Guest {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  title: String
+  dateOfBirth: Date
+  nationality: String
+  passportNumber: String
+  passportExpiry: Date
+  contact: GuestContact
+  loyaltyAccount: LoyaltyAccount
+}
+
+"""Contact information for a guest."""
+type GuestContact {
+  email: String!
+  phoneCountryCode: String
+  phone: String
+  addressLine1: String
+  addressLine2: String
+  city: String
+  stateProvince: String
+  postalCode: String
+  country: String
+}
+
+# ─────────────────────────────────────────────
+# Payment and Billing
+# ─────────────────────────────────────────────
+
+"""Payment information for a booking."""
+type Payment {
+  id: ID!
+  method: PaymentMethod!
+  status: String!
+  amount: Money!
+  billingInfo: BillingInfo
+  transactionId: String
+  authorizationCode: String
+  processedAt: DateTime
+}
+
+"""Billing / card information associated with a payment."""
+type BillingInfo {
+  cardType: String
+  cardLastFour: String
+  cardExpiry: String
+  nameOnCard: String
+  billingAddress: String
+  billingCity: String
+  billingState: String
+  billingPostalCode: String
+  billingCountry: String
+}
+
+# ─────────────────────────────────────────────
+# Cancellation Policies
+# ─────────────────────────────────────────────
+
+"""Cancellation policy attached to a rate plan or booking."""
+type CancellationPolicy {
+  id: ID!
+  refundable: Boolean!
+  description: String
+  freeCancellationDeadline: DateTime
+  penalties: [CancellationPenalty!]
+}
+
+"""A penalty applied when cancelling a booking after a deadline."""
+type CancellationPenalty {
+  id: ID!
+  deadline: DateTime!
+  amount: Money
+  percentage: Decimal
+  nights: Int
+  refundType: CancellationRefundType!
+}
+
+# ─────────────────────────────────────────────
+# Bookings and Reservations
+# ─────────────────────────────────────────────
+
+"""A confirmed booking encompassing one or more reservations."""
+type Booking {
+  id: ID!
+  confirmationNumber: String!
+  status: BookingStatus!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  primaryGuest: Guest!
+  additionalGuests: [Guest!]
+  reservations: [Reservation!]!
+  totalAmount: Money!
+  amountPaid: Money!
+  amountDue: Money!
+  payments: [Payment!]
+  cancellationPolicy: CancellationPolicy
+  voucher: Voucher
+  itinerary: Itinerary
+}
+
+"""A single property/hotel reservation within a booking."""
+type Reservation {
+  id: ID!
+  booking: Booking!
+  confirmationNumber: String!
+  status: BookingStatus!
+  property: Property!
+  checkIn: Date!
+  checkOut: Date!
+  nights: Int!
+  roomReservations: [RoomReservation!]!
+  totalRate: Money!
+  taxes: [Tax!]
+  fees: [Fee!]
+  totalWithTaxesAndFees: Money!
+  specialRequests: String
+  cancellationPolicy: CancellationPolicy
+}
+
+"""A single room reservation within a property reservation."""
+type RoomReservation {
+  id: ID!
+  reservation: Reservation!
+  room: Room!
+  ratePlan: RatePlan!
+  rate: Rate!
+  guests: [Guest!]!
+  checkIn: Date!
+  checkOut: Date!
+  confirmationNumber: String!
+}
+
+# ─────────────────────────────────────────────
+# Flights and Air Travel
+# ─────────────────────────────────────────────
+
+"""An airline carrier."""
+type Airline {
+  id: ID!
+  iataCode: String!
+  icaoCode: String
+  name: String!
+  country: String
+  logoUrl: URL
+  website: URL
+}
+
+"""A flight route segment between two airports."""
+type AirRoute {
+  id: ID!
+  originAirport: String!
+  originCity: String!
+  destinationAirport: String!
+  destinationCity: String!
+  airline: Airline!
+  flightNumber: String!
+  departureTime: DateTime!
+  arrivalTime: DateTime!
+  durationMinutes: Int!
+  stops: Int!
+  aircraft: String
+  cabinClass: CabinClass!
+  availableSeats: Int
+  baggageAllowance: String
+}
+
+"""A flight product available for booking."""
+type Flight {
+  id: ID!
+  routes: [AirRoute!]!
+  totalDurationMinutes: Int!
+  cabinClass: CabinClass!
+  price: Money!
+  taxes: [Tax!]
+  totalWithTaxes: Money!
+  refundable: Boolean!
+  changeable: Boolean!
+  fareCode: String
+  fareFamily: String
+  seatsRemaining: Int
+}
+
+"""A seat on a specific aircraft."""
+type Seat {
+  id: ID!
+  seatNumber: String!
+  row: Int!
+  column: String!
+  cabinClass: CabinClass!
+  type: String
+  windowSeat: Boolean
+  aisleSeat: Boolean
+  extraLegroom: Boolean
+  available: Boolean!
+  price: Money
+}
+
+"""A seat map for a flight showing seat layout and availability."""
+type SeatMap {
+  flightId: ID!
+  flightNumber: String!
+  aircraft: String!
+  cabinClass: CabinClass!
+  seats: [Seat!]!
+}
+
+"""A confirmed flight booking."""
+type FlightBooking {
+  id: ID!
+  confirmationNumber: String!
+  status: BookingStatus!
+  flight: Flight!
+  passengers: [Guest!]!
+  seats: [Seat!]
+  totalAmount: Money!
+  ticketNumbers: [String!]
+  eTicketUrl: URL
+  createdAt: DateTime!
+}
+
+# ─────────────────────────────────────────────
+# Itineraries
+# ─────────────────────────────────────────────
+
+"""A single item within a travel itinerary."""
+type ItineraryItem {
+  id: ID!
+  sequence: Int!
+  type: String!
+  startDate: DateTime!
+  endDate: DateTime!
+  title: String!
+  description: String
+  confirmation: String
+  reservation: Reservation
+  flightBooking: FlightBooking
+  carRental: CarRental
+  activity: Activity
+  voucher: Voucher
+}
+
+"""A full trip itinerary containing all travel items."""
+type Itinerary {
+  id: ID!
+  tripName: String
+  startDate: Date!
+  endDate: Date!
+  primaryTraveler: Guest!
+  items: [ItineraryItem!]!
+  totalCost: Money!
+  booking: Booking
+}
+
+# ─────────────────────────────────────────────
+# Car Rentals
+# ─────────────────────────────────────────────
+
+"""A car rental vendor."""
+type Vendor {
+  id: ID!
+  code: String!
+  name: String!
+  logoUrl: URL
+  website: URL
+}
+
+"""A rental location (pickup or dropoff point)."""
+type RentalLocation {
+  id: ID!
+  vendor: Vendor!
+  name: String!
+  address: String!
+  city: String!
+  country: String!
+  latitude: Float
+  longitude: Float
+  airportCode: String
+  phone: String
+  openingHours: String
+}
+
+"""A type or class of rental car."""
+type CarType {
+  id: ID!
+  category: CarCategory!
+  name: String!
+  exampleModel: String
+  seats: Int
+  doors: Int
+  transmission: String
+  airConditioning: Boolean
+  largeLuggageCapacity: Int
+  smallLuggageCapacity: Int
+  imageUrl: URL
+}
+
+"""A car rental reservation."""
+type CarRental {
+  id: ID!
+  confirmationNumber: String!
+  status: BookingStatus!
+  vendor: Vendor!
+  carType: CarType!
+  pickupLocation: RentalLocation!
+  dropoffLocation: RentalLocation!
+  pickupDateTime: DateTime!
+  dropoffDateTime: DateTime!
+  durationDays: Int!
+  renter: Guest!
+  dailyRate: Money!
+  totalRate: Money!
+  taxes: [Tax!]
+  fees: [Fee!]
+  totalWithTaxesAndFees: Money!
+  insurance: Insurance
+  cancellationPolicy: CancellationPolicy
+}
+
+# ─────────────────────────────────────────────
+# Activities and Experiences
+# ─────────────────────────────────────────────
+
+"""A destination city or region."""
+type Destination {
+  id: ID!
+  name: String!
+  country: String!
+  region: String
+  latitude: Float!
+  longitude: Float!
+  description: String
+  imageUrl: URL
+  pointsOfInterest: [PointOfInterest!]
+  activities: [Activity!]
+}
+
+"""A geographic coordinate."""
+type Point {
+  latitude: Float!
+  longitude: Float!
+}
+
+"""A point of interest at a destination."""
+type PointOfInterest {
+  id: ID!
+  name: String!
+  type: String!
+  description: String
+  address: String
+  location: Point!
+  rating: Float
+  reviewCount: Int
+  openingHours: String
+  entryFee: Money
+  imageUrl: URL
+  website: URL
+}
+
+"""A bookable activity or experience."""
+type Activity {
+  id: ID!
+  name: String!
+  type: String!
+  description: String
+  destination: Destination!
+  duration: String
+  meetingPoint: String
+  location: Point
+  languages: [String!]
+  minParticipants: Int
+  maxParticipants: Int
+  minAge: Int
+  included: [String!]
+  excluded: [String!]
+  cancellationPolicy: CancellationPolicy
+  price: Money!
+  rating: Float
+  reviewCount: Int
+  media: [Media!]
+}
+
+"""A guided tour product."""
+type Tour {
+  id: ID!
+  activity: Activity!
+  tourCode: String!
+  departureDates: [Date!]
+  departureTime: String
+  guide: String
+  groupSize: Int
+  pricePerPerson: Money!
+  totalPrice: Money
+}
+
+# ─────────────────────────────────────────────
+# Reviews and Content
+# ─────────────────────────────────────────────
+
+"""A guest review for a property or activity."""
+type Review {
+  id: ID!
+  authorName: String!
+  rating: Float!
+  title: String
+  body: String
+  stayDate: Date
+  submittedAt: DateTime!
+  sentiment: ReviewSentiment
+  helpful: Int
+  verified: Boolean!
+  response: String
+  categories: [String!]
+}
+
+"""An aggregated review summary for a property or activity."""
+type ReviewSummary {
+  averageRating: Float!
+  totalReviews: Int!
+  ratingDistribution: [Int!]
+  categoryRatings: [CategoryRating!]
+  recentReviews: [Review!]
+}
+
+"""A rating for a specific category such as cleanliness or location."""
+type CategoryRating {
+  category: String!
+  rating: Float!
+}
+
+# ─────────────────────────────────────────────
+# Amenities and Media
+# ─────────────────────────────────────────────
+
+"""An amenity offered by a property or room."""
+type Amenity {
+  id: ID!
+  name: String!
+  category: String
+  description: String
+  iconUrl: URL
+  free: Boolean
+}
+
+"""A media asset such as a photo or video."""
+type Media {
+  id: ID!
+  type: MediaType!
+  url: URL!
+  thumbnailUrl: URL
+  caption: String
+  width: Int
+  height: Int
+  sortOrder: Int
+}
+
+# ─────────────────────────────────────────────
+# Insurance
+# ─────────────────────────────────────────────
+
+"""A generic insurance product attached to a booking."""
+type Insurance {
+  id: ID!
+  type: String!
+  provider: String!
+  name: String!
+  description: String
+  premium: Money!
+  coverageAmount: Money
+  coverageDetails: String
+  policyNumber: String
+  startDate: Date
+  endDate: Date
+}
+
+"""A travel insurance product."""
+type TravelInsurance {
+  id: ID!
+  insurance: Insurance!
+  tripCancellationCoverage: Money
+  medicalCoverage: Money
+  evacuationCoverage: Money
+  baggageCoverage: Money
+  flightDelayCoverage: Money
+  preExistingConditions: Boolean
+  travelers: [Guest!]
+}
+
+# ─────────────────────────────────────────────
+# Loyalty Programs
+# ─────────────────────────────────────────────
+
+"""An Expedia Group or partner loyalty program."""
+type LoyaltyProgram {
+  id: ID!
+  name: String!
+  provider: String!
+  description: String
+  currency: String
+  tiers: [String!]
+  enrollmentUrl: URL
+}
+
+"""A member's account in a loyalty program."""
+type LoyaltyAccount {
+  id: ID!
+  member: Guest!
+  program: LoyaltyProgram!
+  memberNumber: String!
+  tier: String
+  pointsBalance: LoyaltyPoints!
+  expiringPoints: LoyaltyPoints
+  expiryDate: Date
+  memberSince: Date
+}
+
+"""A quantity of loyalty points."""
+type LoyaltyPoints {
+  amount: Int!
+  monetaryValue: Money
+  currency: String!
+}
+
+# ─────────────────────────────────────────────
+# Packages and Offers
+# ─────────────────────────────────────────────
+
+"""A bundled travel package combining multiple booking components."""
+type TravelPackage {
+  id: ID!
+  name: String!
+  description: String
+  destination: Destination!
+  startDate: Date!
+  endDate: Date!
+  nights: Int!
+  guests: Int!
+  includesFlight: Boolean!
+  includesHotel: Boolean!
+  includesCar: Boolean!
+  includesActivities: Boolean!
+  totalPrice: Money!
+  savingsAmount: Money
+  savingsPercentage: Decimal
+  cancellationPolicy: CancellationPolicy
+}
+
+"""A vacation package combining flights and lodging."""
+type VacationPackage {
+  id: ID!
+  package: TravelPackage!
+  flight: Flight
+  property: Property
+  room: Room
+  ratePlan: RatePlan
+  carRental: CarRental
+  activities: [Activity!]
+  totalPrice: Money!
+  perPersonPrice: Money
+}
+
+"""A redeemable voucher for travel services."""
+type Voucher {
+  id: ID!
+  code: String!
+  type: String!
+  description: String
+  value: Money
+  percentageOff: Decimal
+  minimumPurchase: Money
+  validFrom: Date!
+  validUntil: Date!
+  redeemed: Boolean!
+  redeemedAt: DateTime
+  applicableServices: [String!]
+}
+
+"""A promotional offer."""
+type Offer {
+  id: ID!
+  title: String!
+  description: String!
+  type: String!
+  discount: Money
+  discountPercentage: Decimal
+  validFrom: Date
+  validUntil: Date
+  terms: String
+  applicableTo: [String!]
+  imageUrl: URL
+  deepLink: URL
+}
+
+"""A curated deal on flights, hotels, or packages."""
+type Deal {
+  id: ID!
+  title: String!
+  description: String!
+  property: Property
+  flight: Flight
+  package: TravelPackage
+  originalPrice: Money!
+  dealPrice: Money!
+  savings: Money!
+  savingsPercentage: Decimal!
+  expiresAt: DateTime
+  destination: Destination
+  imageUrl: URL
+  bookingUrl: URL
+}
+
+# ─────────────────────────────────────────────
+# API Access
+# ─────────────────────────────────────────────
+
+"""API credentials for accessing Expedia Group APIs."""
+type APICredential {
+  id: ID!
+  name: String!
+  environment: String!
+  createdAt: DateTime!
+  expiresAt: DateTime
+  scopes: [String!]
+  status: String!
+}
+
+"""A RAPID API key for accessing Expedia Group RAPID API."""
+type RapidKey {
+  id: ID!
+  apiKey: String!
+  secret: String
+  environment: String!
+  rateLimit: Int
+  rateLimitWindow: String
+  createdAt: DateTime!
+  expiresAt: DateTime
+  status: String!
+  allowedOrigins: [String!]
+}
+
+# ─────────────────────────────────────────────
+# Query Root
+# ─────────────────────────────────────────────
+
+type Query {
+  """Search for properties by location and dates."""
+  searchProperties(criteria: SearchCriteria!): PropertySearch!
+
+  """Get a single property by ID."""
+  getProperty(id: ID!): Property
+
+  """Get a hotel by property ID."""
+  getHotel(propertyId: ID!): Hotel
+
+  """Check room availability for a date range."""
+  checkAvailability(roomId: ID!, checkIn: Date!, checkOut: Date!): AvailabilityRange
+
+  """Get rates for a room."""
+  getRates(roomId: ID!, checkIn: Date!, checkOut: Date!, adults: Int!, children: Int): [Rate!]
+
+  """Search for flights between two airports."""
+  searchFlights(
+    origin: String!
+    destination: String!
+    departureDate: Date!
+    returnDate: Date
+    adults: Int!
+    children: Int
+    cabinClass: CabinClass
+    currency: String
+  ): [Flight!]!
+
+  """Get a flight seat map."""
+  getSeatMap(flightId: ID!, cabinClass: CabinClass): SeatMap
+
+  """Get a booking by confirmation number."""
+  getBooking(confirmationNumber: String!): Booking
+
+  """List all bookings for the authenticated user."""
+  listBookings(status: BookingStatus, page: Int, pageSize: Int): [Booking!]!
+
+  """Get an itinerary by ID."""
+  getItinerary(id: ID!): Itinerary
+
+  """Search for activities at a destination."""
+  searchActivities(destinationId: ID!, date: Date, category: String, page: Int, pageSize: Int): [Activity!]!
+
+  """Get a destination by ID."""
+  getDestination(id: ID!): Destination
+
+  """Search destinations by name or coordinates."""
+  searchDestinations(query: String, latitude: Float, longitude: Float, radiusKm: Float): [Destination!]!
+
+  """Get a car rental confirmation."""
+  getCarRental(confirmationNumber: String!): CarRental
+
+  """Search car rentals."""
+  searchCarRentals(
+    pickupLocationId: ID!
+    dropoffLocationId: ID
+    pickupDateTime: DateTime!
+    dropoffDateTime: DateTime!
+    driverAge: Int
+    currency: String
+  ): [CarRental!]!
+
+  """Get reviews for a property."""
+  getReviews(propertyId: ID!, page: Int, pageSize: Int): [Review!]!
+
+  """Get the loyalty account for the authenticated user."""
+  getLoyaltyAccount(programId: ID): LoyaltyAccount
+
+  """List available offers and deals."""
+  listDeals(destinationId: ID, category: String, page: Int, pageSize: Int): [Deal!]!
+
+  """Get a deal by ID."""
+  getDeal(id: ID!): Deal
+
+  """Get a voucher by code."""
+  getVoucher(code: String!): Voucher
+
+  """List API credentials for the authenticated developer."""
+  listAPICredentials: [APICredential!]!
+
+  """Get a RAPID API key by ID."""
+  getRapidKey(id: ID!): RapidKey
+}
+
+# ─────────────────────────────────────────────
+# Mutation Root
+# ─────────────────────────────────────────────
+
+input GuestInput {
+  firstName: String!
+  lastName: String!
+  title: String
+  email: String!
+  phone: String
+  dateOfBirth: Date
+  nationality: String
+  passportNumber: String
+  passportExpiry: Date
+}
+
+input PaymentInput {
+  method: PaymentMethod!
+  cardType: String
+  cardNumber: String
+  cardExpiry: String
+  cardCvv: String
+  nameOnCard: String
+  billingAddress: String
+  billingCity: String
+  billingState: String
+  billingPostalCode: String
+  billingCountry: String
+  loyaltyPoints: Int
+  voucherCode: String
+}
+
+input BookingInput {
+  rateId: ID!
+  checkIn: Date!
+  checkOut: Date!
+  primaryGuest: GuestInput!
+  additionalGuests: [GuestInput!]
+  payment: PaymentInput!
+  specialRequests: String
+  loyaltyAccountNumber: String
+}
+
+input FlightBookingInput {
+  flightId: ID!
+  passengers: [GuestInput!]!
+  selectedSeats: [ID!]
+  payment: PaymentInput!
+  loyaltyAccountNumber: String
+}
+
+type Mutation {
+  """Create a hotel booking."""
+  createBooking(input: BookingInput!): Booking!
+
+  """Cancel a booking."""
+  cancelBooking(confirmationNumber: String!, reason: String): Booking!
+
+  """Create a flight booking."""
+  createFlightBooking(input: FlightBookingInput!): FlightBooking!
+
+  """Cancel a flight booking."""
+  cancelFlightBooking(confirmationNumber: String!, reason: String): FlightBooking!
+
+  """Create a car rental booking."""
+  createCarRental(
+    carTypeId: ID!
+    pickupLocationId: ID!
+    dropoffLocationId: ID
+    pickupDateTime: DateTime!
+    dropoffDateTime: DateTime!
+    renter: GuestInput!
+    payment: PaymentInput!
+    insuranceId: ID
+  ): CarRental!
+
+  """Cancel a car rental."""
+  cancelCarRental(confirmationNumber: String!, reason: String): CarRental!
+
+  """Book an activity."""
+  bookActivity(
+    activityId: ID!
+    date: Date!
+    participants: [GuestInput!]!
+    payment: PaymentInput!
+  ): Booking!
+
+  """Add a payment to an existing booking."""
+  addPayment(bookingId: ID!, payment: PaymentInput!): Payment!
+
+  """Apply a voucher to a booking."""
+  applyVoucher(bookingId: ID!, voucherCode: String!): Booking!
+
+  """Redeem loyalty points toward a booking."""
+  redeemLoyaltyPoints(bookingId: ID!, points: Int!, programId: ID!): LoyaltyAccount!
+
+  """Add a review for a property."""
+  addReview(propertyId: ID!, rating: Float!, title: String, body: String, stayDate: Date): Review!
+
+  """Create a new RAPID API key."""
+  createRapidKey(name: String!, environment: String!, scopes: [String!]): RapidKey!
+
+  """Revoke a RAPID API key."""
+  revokeRapidKey(id: ID!): APICredential!
+}
