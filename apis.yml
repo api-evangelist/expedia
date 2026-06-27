@@ -28,7 +28,7 @@ common:
   url: https://www.linkedin.com/company/expediagroup
 - type: Website
   url: https://www.expedia.com
-- type: Developer Portal
+- type: DeveloperPortal
   url: https://developers.expediagroup.com/
 - type: Canonical Catalog
   url: https://github.com/api-evangelist/expedia-group
