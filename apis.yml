@@ -24,6 +24,10 @@ include:
 - name: Expedia Group
   url: https://raw.githubusercontent.com/api-evangelist/expedia-group/refs/heads/main/apis.yml
 common:
+- type: VulnerabilityDisclosure
+  url: security/expedia-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/expedia-domain-security.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/expediagroup
 - type: Website
