@@ -6,6 +6,17 @@ description: Expedia is one of the world's leading travel platforms, helping tra
   under the Expedia Group developer platform; this repository serves as a brand alias
   pointing to the canonical expedia-group catalog.
 type: Index
+deliveryModel:
+  model: unknown
+  open_source: false
+  commercial: false
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - none
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: unknown
