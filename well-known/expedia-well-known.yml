@@ -1,0 +1,136 @@
+generated: '2026-09-07'
+method: searched
+source: live probes of the named /.well-known/ path list on every host this record knows
+note: >-
+  www.expedia.com and expedia.com serve a real RFC 9116 security.txt and a real llms.txt at HTTP 200
+  with text/plain. Every OTHER path on those two hosts is answered by an Akamai/Istio bot-challenge
+  handler that returns HTTP 429 with a 25KB gzipped captcha page (response headers
+  `x-app-info: captcha-pwa` and `x-hcom-origin-id: wildcard-challenge-handler`). That is a wildcard
+  challenge, not a document, and it is recorded as a 429 miss rather than a hit. The negative control
+  path returned the same 429, so this host is NOT path-echoing and there are no false positives to
+  discard. developers.expediagroup.com answers a clean JSON 404 for every path.
+path_echo_control: passed
+hosts:
+- host: www.expedia.com
+  hit_count: 1
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: expedia-security.txt
+  - path: /.well-known/openid-configuration
+    status: 429
+  - path: /.well-known/oauth-authorization-server
+    status: 429
+  - path: /.well-known/oauth-protected-resource
+    status: 429
+  - path: /.well-known/api-catalog
+    status: 429
+  - path: /.well-known/ai-plugin.json
+    status: 429
+  - path: /.well-known/aauth-resource.json
+    status: 429
+  - path: /.well-known/apis.json
+    status: 429
+  - path: /apis.json
+    status: 429
+  - path: /apis.yml
+    status: 429
+  - path: /.well-known/agent-card.json
+    status: 429
+  - path: /.well-known/agent.json
+    status: 429
+  - path: /.well-known/ucp.json
+    status: 429
+  - path: /.well-known/expedia-negative-control-7f3ab91c.json
+    status: 429
+    note: negative control — a path that cannot exist; the 429 matches every other miss, so no path echo
+- host: expedia.com
+  hit_count: 1
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    file: expedia-security.txt
+    note: identical body to the www host
+  - path: /.well-known/openid-configuration
+    status: 429
+  - path: /.well-known/oauth-authorization-server
+    status: 429
+  - path: /.well-known/oauth-protected-resource
+    status: 429
+  - path: /.well-known/api-catalog
+    status: 429
+  - path: /.well-known/ai-plugin.json
+    status: 429
+  - path: /.well-known/aauth-resource.json
+    status: 429
+  - path: /.well-known/apis.json
+    status: 429
+  - path: /apis.json
+    status: 429
+  - path: /apis.yml
+    status: 429
+  - path: /.well-known/agent-card.json
+    status: 429
+  - path: /.well-known/agent.json
+    status: 429
+  - path: /.well-known/expedia-negative-control-7f3ab91c.json
+    status: 429
+    note: negative control
+- host: developers.expediagroup.com
+  hit_count: 0
+  note: >-
+    The Expedia Group developer hub, named as this record's DeveloperPortal. It answers
+    {"statusCode":404,"error":"Not Found","message":"Not Found"} for every /.well-known/ path
+    including the negative control.
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/expedia-negative-control-7f3ab91c.json
+    status: 404
+    note: negative control
+security_txt:
+  served: true
+  url: https://www.expedia.com/.well-known/security.txt
+  contact: RespDisc@expedia.com
+  policy: https://www.expediagroup.com/about/privacy-data-handling-requirements/
+  hiring: https://lifeatexpedia.com/
+  rfc9116_expires_present: false
+  defects:
+  - >-
+    The Policy: URL is DEAD. https://www.expediagroup.com/about/privacy-data-handling-requirements/
+    301s to https://www.expediagroup.com/en-us/our-story, which itself returns HTTP 404. A researcher
+    following Expedia's own security.txt lands on a Page Not Found. Probed 2026-09-07.
+  - >-
+    No Expires: field. RFC 9116 section 2.5.5 makes Expires REQUIRED; a security.txt without it is
+    non-conformant and cannot be aged out by an automated consumer.
+agent_card:
+  found: false
+  note: >-
+    Neither /.well-known/agent-card.json nor the legacy /.well-known/agent.json returned a document on
+    any host. On expedia.com the probe was answered by the bot-challenge handler (429), on
+    developers.expediagroup.com by a JSON 404. No card was saved and NO AgentCard pointer is emitted —
+    an agent card is search-only and is never authored on a provider's behalf.

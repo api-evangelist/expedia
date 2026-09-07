@@ -1,0 +1,67 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://www.expedia.com/llms.txt (first-party, HTTP 200, text/plain, saved verbatim to
+  llms/expedia-llms.txt), https://legal.expediagroup.com/privacy (HTTP 200),
+  https://api.expediagroup.com/supply/lodging/graphql (HTTP 401).
+note: >-
+  Expedia is a consumer travel marketplace, not a standards-body participant. There is no
+  travel-domain machine-readable standard declared in any contract we could reach — the partner
+  GraphQL surface is auth-gated (401) and the developer documentation is JavaScript-rendered, so no
+  spec location can be cited as evidence. Domain-standard conformance is therefore recorded as NOT
+  ASSERTED rather than false: reward-only, and an absent standard is not a penalty. The compliance
+  entries below are Expedia's own published claims, cited to the document that makes them.
+conformance:
+- id: pci-dss
+  conforms: true
+  evidence: >-
+    https://www.expedia.com/llms.txt — "PCI DSS–compliant payment processing", under the "Privacy &
+    Security" heading. Expedia's own machine-readable statement; no certificate or attestation report
+    is published, and no level is stated.
+  basis: provider-claim
+- id: gdpr
+  conforms: true
+  evidence: >-
+    https://www.expedia.com/llms.txt — "Privacy practices aligned with applicable local regulations
+    (e.g., GDPR in the EU/EEA and similar frameworks)"; expanded at
+    https://legal.expediagroup.com/privacy (HTTP 200) and
+    https://legal.expediagroup.com/privacy/international-data-transfer/eu.
+  basis: provider-claim
+- id: tls
+  conforms: true
+  evidence: >-
+    Probed 2026-09-07 — www.expedia.com negotiates TLSv1.3 and sets
+    strict-transport-security: max-age=63072000; includeSubDomains. See
+    security/expedia-domain-security.yml.
+  basis: probed
+- id: oauth2
+  conforms: true
+  evidence: >-
+    The Expedia Group partner GraphQL endpoint https://api.expediagroup.com/supply/lodging/graphql
+    returns HTTP 401 to an anonymous POST and the connectivity documentation describes OAuth 2.0
+    bearer tokens. Corroborated by the first-party client
+    com.expediagroup:expediagroup-sdk-graphql (0.0.8-alpha, 2025-06-02).
+  basis: probed
+  caveat: >-
+    No /.well-known/oauth-authorization-server or /.well-known/openid-configuration document is served
+    on any Expedia host — those probes were answered by a bot-challenge handler (429) on expedia.com
+    and a JSON 404 on developers.expediagroup.com. The OAuth surface is documented in prose only, so
+    it is not machine-discoverable.
+- id: rfc9116
+  conforms: false
+  evidence: >-
+    https://www.expedia.com/.well-known/security.txt is served (HTTP 200) but omits the REQUIRED
+    Expires field and its Policy URL is dead (301 -> 404). See
+    security/expedia-vulnerability-disclosure.yml.
+  basis: probed
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    No application/problem+json response could be observed — the only reachable API surface returns a
+    401 with an empty body, and no OpenAPI is published on any probed host.
+  basis: probed
+domain_standard:
+  asserted: false
+  reason: >-
+    No travel-industry standard (OTA/OpenTravel, IATA NDC, HTNG) is declared in any Expedia contract
+    reachable without partner credentials. Not scored, not penalised.

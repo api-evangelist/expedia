@@ -1,0 +1,32 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://developers.expediagroup.com/docs/products/rapid/lodging/rate-limits (HTTP 200 but a SOFT-404
+  — the body is the developer hub's "We can't find what you're looking for" page),
+  https://developers.expediagroup.com/docs/products/rapid (HTTP 200, marketing landing page, no limits),
+  https://connectivityportal.expediagroup.com/documentation/expedia (HTTP 200, JavaScript-rendered
+  shell), https://api.expediagroup.com/supply/lodging/graphql (HTTP 401, empty body). Probed 2026-09-07.
+limit_count: 0
+rate_limits: []
+headers: []
+status_on_exhaustion: null
+note: >-
+  NO RATE LIMIT COULD BE READ FROM A FIRST-PARTY SURFACE. This is an unreadable-docs result, not an
+  absence of limits. Expedia Group's connectivity documentation is a JavaScript-rendered single-page
+  application that returns a ~190KB HTML shell with no prose to a crawler, and its own rate-limits path
+  under the Rapid product answers HTTP 200 with a soft-404 body. The one API endpoint that is
+  addressable anonymously, the partner lodging GraphQL surface, returns 401 with an empty body and no
+  RateLimit-* or Retry-After header, so nothing could be observed at runtime either. Third-party
+  summaries describe a 50 TPS per-connectivity-partner ceiling; that figure is NOT recorded as a limit
+  here because it could not be traced to a page Expedia serves in readable form, and an unverifiable
+  number is worse than an honest zero.
+observed_headers_on_401:
+  endpoint: https://api.expediagroup.com/supply/lodging/graphql
+  http_status: 401
+  rate_limit_headers_present: false
+what_would_fix_this:
+  owner: provider
+  detail: >-
+    Publishing the Rapid and lodging-connectivity limits as text on a crawlable page, or emitting
+    RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset (RFC 9331 draft) and Retry-After on the
+    429 response, would make the runtime signal readable to an agent.

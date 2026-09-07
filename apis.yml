@@ -37,7 +37,7 @@ tags:
 - Fortune 500
 url: https://raw.githubusercontent.com/api-evangelist/expedia/refs/heads/main/apis.yml
 created: '2026-03-21'
-modified: '2026-04-28'
+modified: '2026-09-07'
 position: Consuming
 access: 3rd-Party
 specificationVersion: '0.23'
@@ -46,20 +46,61 @@ include:
 - name: Expedia Group
   url: https://raw.githubusercontent.com/api-evangelist/expedia-group/refs/heads/main/apis.yml
 common:
-- type: VulnerabilityDisclosure
-  url: security/expedia-vulnerability-disclosure.yml
-- type: DomainSecurity
-  url: security/expedia-domain-security.yml
-- type: LinkedIn
-  url: https://www.linkedin.com/company/expediagroup
 - type: Website
   url: https://www.expedia.com
 - type: DeveloperPortal
   url: https://developers.expediagroup.com/
+- type: Documentation
+  url: https://developers.expediagroup.com/docs/
+- type: Support
+  url: https://www.expedia.com/helpcenter
+- type: Blog
+  url: https://partner.expediagroup.com/en-us/resources/blog
+- type: GitHubOrganization
+  url: https://github.com/ExpediaGroup
+- type: TermsOfService
+  url: https://www.expediagroup.com/terms-of-use/default.aspx
+- type: PrivacyPolicy
+  url: https://legal.expediagroup.com/privacy
+- type: LinkedIn
+  url: https://www.linkedin.com/company/expediagroup
 - type: Canonical Catalog
   url: https://github.com/api-evangelist/expedia-group
-- url: graphql/expedia-graphql.md
-  type: GraphQL
+- type: GraphQL
+  url: graphql/expedia-graphql.md
+- type: LLMsTxt
+  url: llms/expedia-llms.txt
+- type: WellKnown
+  url: well-known/expedia-well-known.yml
+- type: SecurityTxt
+  url: well-known/expedia-security.txt
+- type: Security
+  url: security/expedia-vulnerability-disclosure.yml
+- type: VulnerabilityDisclosure
+  url: security/expedia-vulnerability-disclosure.yml
+- type: DomainSecurity
+  url: security/expedia-domain-security.yml
+- type: MCPServer
+  url: mcp/expedia-mcp.yml
+- type: Packages
+  url: packages/expedia-packages.yml
+- type: SDKs
+  url: packages/expedia-packages.yml
+- type: Conformance
+  url: conformance/expedia-conformance.yml
+- type: Compliance
+  url: conformance/expedia-conformance.yml
+- type: Lifecycle
+  url: lifecycle/expedia-lifecycle.yml
+- type: Plans
+  url: plans/expedia-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/expedia-rate-limits.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-09-07'
+  status: enriched
+  artifacts_added: 9
+  pass: local-v3

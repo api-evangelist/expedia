@@ -1,8 +1,25 @@
 """
-Expedia GraphQL Schema
-Conceptual schema derived from the Expedia Group RAPID API and developer platform.
-Developer Portal: https://developers.expediagroup.com/
-GitHub: https://github.com/ExpediaGroup
+=============================================================================
+NOT PUBLISHED BY EXPEDIA. THIS IS NOT EXPEDIA'S GraphQL SCHEMA.
+=============================================================================
+generated: 2026-09-07
+method: generated
+x-generated-from: documentation
+source: Expedia Group Rapid/EPS REST documentation (developers.expediagroup.com)
+
+This is a CONCEPTUAL domain model authored by API Evangelist, not a schema
+Expedia Group publishes. Expedia Group's real GraphQL endpoint is
+https://api.expediagroup.com/supply/lodging/graphql, which returns HTTP 401 to
+an anonymous request and does not permit introspection without partner
+credentials (probed 2026-09-07).
+
+Every type, field, argument and nullability marker below is INFERRED. None of
+it has been validated against the live schema. Do not generate clients from
+it, and do not derive error catalogs, data models, MCP tools, agentic-access
+contracts or Agent Skills from it.
+
+See graphql/expedia-graphql.md.
+=============================================================================
 """
 
 # ─────────────────────────────────────────────

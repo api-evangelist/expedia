@@ -1,0 +1,21 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://developers.expediagroup.com/ (HTTP 200), https://developers.expediagroup.com/docs/products/rapid
+  (HTTP 200), https://developers.expediagroup.com/docs/ai-solutions (HTTP 200). Probed 2026-09-07.
+plan_count: 0
+plans: []
+note: >-
+  EXPEDIA PUBLISHES NO API PRICING. There are no tiers, no free tier, no published rate card and no
+  self-serve checkout for any Expedia or Expedia Group API. Access to Rapid (EPS), XAP, Fraud
+  Prevention, the lodging connectivity GraphQL surface and the Travel Recommendation Service is
+  granted through a commercial partner agreement — the developer hub's calls to action are "Join us"
+  and "Reach out to your account manager", not a signup-and-pay flow. Compensation on the affiliate
+  side is commission-based and negotiated per partner rather than published. This is an honest zero:
+  the pricing page does not exist, rather than existing and being missed.
+access_model:
+  pricing: enterprise
+  onboarding: partner-application
+  self_serve: false
+  free_tier: false
+  trial: false

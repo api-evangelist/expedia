@@ -1,0 +1,74 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  https://github.com/ExpediaGroup/expedia-travel-recommendations-mcp and
+  https://pypi.org/pypi/expedia-travel-recommendations-mcp/json (registry metadata read 2026-09-07),
+  cross-checked against https://developers.expediagroup.com/docs/ai-solutions (HTTP 200).
+ownership: >-
+  Published by the ExpediaGroup GitHub organization and to PyPI under an Apache-2.0 licence. Expedia
+  (expedia.com) is a brand of Expedia Group; this repository is the brand alias for that estate.
+status: published
+name: Expedia Travel Recommendations MCP Server
+description: >-
+  An MCP server for the Expedia Travel Recommendation Service API, exposing hotel, flight, activity
+  and car-rental recommendations to MCP clients.
+deployment:
+  mode: local-stdio
+  endpoint: null
+  install: uvx expedia_travel_recommendations_mcp --protocol "stdio"
+  package: https://pypi.org/project/expedia-travel-recommendations-mcp/
+  auth: api-key
+  verified: searched
+deployment_note: >-
+  THERE IS NO HOSTED EXPEDIA MCP ENDPOINT. This server ships as a Python package the consumer installs
+  and runs. It supports two transports — `stdio` for LLM clients and `streamable-http` for web clients —
+  but the streamable-http listener binds to the OPERATOR'S OWN machine (http://0.0.0.0:9900/mcp in the
+  project README), so it is a self-hosted transport option, not an Expedia-operated agent surface. Mode
+  is therefore local-stdio, not remote and not both: an agent cannot reach Expedia over MCP today
+  without a human first installing and running this package and supplying a key.
+  Expedia Group's own AI Solutions page (https://developers.expediagroup.com/docs/ai-solutions,
+  fetched 2026-09-07, HTTP 200) states it is "building MCP capabilities that work seamlessly with our
+  APIs" and is in "the exploration phase" — i.e. the partner-facing hosted MCP server announced in the
+  trade press in May 2026 had not shipped a public endpoint as of this probe. No endpoint URL is
+  recorded here because none was observed; a guessed MCP path is never written.
+authentication:
+  scheme: api-key
+  mechanism: EXPEDIA_API_KEY environment variable read by the server process
+  note: >-
+    The key is for the upstream Expedia Travel Recommendation Service, which is partner-gated. The MCP
+    server itself performs no authorization; it forwards the operator's key.
+package:
+  registry: pypi
+  name: expedia-travel-recommendations-mcp
+  version: 1.0.2
+  published: '2025-08-28'
+  license: Apache-2.0
+  repository: https://github.com/ExpediaGroup/expedia-travel-recommendations-mcp
+tools:
+  method: searched
+  introspection: not-performed
+  introspection_note: >-
+    tools/list was not POSTed because there is no hosted endpoint to POST to — the server only exists
+    once a consumer installs and runs the package. The surface below is read from the project's own
+    README, which documents four POST endpoints; the corresponding MCP tool names and inputSchemas
+    would require running the package locally with a valid EXPEDIA_API_KEY to introspect. Names are
+    recorded as documented, schemas are NOT invented.
+  surfaces:
+  - path: /expedia/hotels
+    capability: hotel recommendations
+  - path: /expedia/flights
+    capability: flight recommendations
+  - path: /expedia/activities
+    capability: activity recommendations
+  - path: /expedia/cars
+    capability: car rental recommendations
+x-evidence:
+- url: https://github.com/ExpediaGroup/expedia-travel-recommendations-mcp
+  http_status: 200
+  fetched: '2026-09-07'
+- url: https://pypi.org/pypi/expedia-travel-recommendations-mcp/json
+  http_status: 200
+  fetched: '2026-09-07'
+- url: https://developers.expediagroup.com/docs/ai-solutions
+  http_status: 200
+  fetched: '2026-09-07'

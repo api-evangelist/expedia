@@ -1,16 +1,61 @@
-# Expedia GraphQL Schema
+---
+generated: '2026-09-07'
+method: probed
+source: https://api.expediagroup.com/supply/lodging/graphql
+---
 
-## Overview
+# Expedia GraphQL
 
-Expedia is one of the world's leading travel platforms, operating a portfolio of brands including Expedia, Hotels.com, Vrbo, Orbitz, Travelocity, Hotwire, Wotif, and trivago. The Expedia Group developer platform exposes travel inventory and booking capabilities through the RAPID API and other REST/SOAP interfaces. This conceptual GraphQL schema represents the core domain model underlying Expedia's travel booking capabilities.
+## THE PUBLISHED SURFACE (probed 2026-09-07)
 
-## Schema Source
+Expedia Group operates a **real, first-party GraphQL API** for lodging connectivity partners:
 
-- **Provider:** Expedia / Expedia Group
+| | |
+|---|---|
+| Endpoint | `https://api.expediagroup.com/supply/lodging/graphql` |
+| Observed status | **HTTP 401**, empty body, on an anonymous POST |
+| Introspection | **gated** — `{__schema{queryType{name}}}` returns 401 |
+| Auth | OAuth 2.0 bearer token, per the Expedia Group connectivity documentation |
+| Docs | https://connectivityportal.expediagroup.com/documentation/expedia (JavaScript-rendered; served as an HTML shell to a crawler) |
+| Corroboration | Expedia Group publishes `com.expediagroup:expediagroup-sdk-graphql` (0.0.8-alpha, 2025-06-02) and `@expediagroup/lodging-connectivity-sdk` (0.0.2, 2024-09-29) — GraphQL clients for this surface |
+
+A 401 on an anonymous POST is the correct, expected result for a partner API. **The endpoint exists and
+the schema is real; we simply cannot read it without partner credentials, and we will not guess at it.**
+The published SDL is therefore *not* in this repository, and no attempt has been made to reconstruct it
+from documentation.
+
+Other hosts probed and ruled out on 2026-09-07: `https://api.expediagroup.com/graphql` → 404
+(`{"code":"NOT_FOUND"}`), `https://developers.expediagroup.com/openapi.json` → 404,
+`https://developers.expediagroup.com/swagger.json` → 404, `https://apim.expedia.com/openapi.json` → 404.
+
+## `expedia-schema.graphql` IS NOT EXPEDIA'S SCHEMA
+
+> **Read this before using `graphql/expedia-schema.graphql` for anything.**
+>
+> That file is a **conceptual domain model written by API Evangelist**, not a document Expedia Group
+> published and not the schema served at the endpoint above. It was authored in June 2026 by reading the
+> Rapid/EPS REST documentation and modelling the travel domain in GraphQL syntax. It has never been
+> validated against Expedia's live schema, because that schema is auth-gated (401).
+>
+> - Its type names, field names, nullability and arguments are **inferred**, not observed.
+> - No query in it is known to execute against `api.expediagroup.com/supply/lodging/graphql`.
+> - It must **never** be used to generate a client, to derive an error catalog, a data model, an
+>   agentic-access contract, an MCP tool list, or an Agent Skill — deriving from it would propagate an
+>   unverified model into artifacts that read as measured fact.
+>
+> It is retained only as a reading aid for the travel domain. `method: generated`,
+> `x-generated-from: documentation`.
+
+## Provider
+
+- **Provider:** Expedia (a brand of Expedia Group)
+- **Canonical catalog:** https://github.com/api-evangelist/expedia-group
 - **Developer Portal:** https://developers.expediagroup.com/
 - **GitHub:** https://github.com/ExpediaGroup
-- **Schema Type:** Conceptual (derived from REST/RAPID API surface)
-- **Schema File:** expedia-schema.graphql
+
+---
+
+# Conceptual domain model (generated — see the warning above)
 
 ## Domain Coverage
 

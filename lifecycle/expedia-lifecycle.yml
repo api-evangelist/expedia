@@ -1,0 +1,56 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  Live probes of the Expedia and Expedia Group public surface, 2026-09-07. Every claim below is a
+  recorded absence with the URL and status that established it.
+status_page:
+  published: false
+  probed:
+  - url: https://trust.expedia.com
+    status: 502
+  - url: https://www.expediagroup.com/trust
+    status: 404
+  note: >-
+    No public API status page could be found for either the Expedia brand or the Expedia Group
+    developer platform. trust.expedia.com resolves but the origin returns HTTP 502. No StatusPage
+    pointer is emitted.
+deprecation_policy:
+  published: false
+  sunset_headers: unknown
+  note: >-
+    No deprecation or sunset policy is reachable. The developer documentation at
+    developers.expediagroup.com is a JavaScript-rendered single-page application that serves a ~200KB
+    HTML shell to a crawler and answers soft-404s with HTTP 200, and the connectivity documentation
+    at connectivityportal.expediagroup.com is the same. RFC 8594 Sunset/Deprecation header support
+    could not be observed because no unauthenticated API response is available. No Deprecation
+    pointer is emitted.
+versioning:
+  scheme: path-versioned
+  evidence: >-
+    Product names and SDK artifact names carry explicit major versions —
+    com.expediagroup:fraudpreventionv2-sdk (Fraud Prevention **v2**),
+    com.expediagroup:rapid-sdk 5.4.0, com.expediagroup:xap-sdk 2.0.0-alpha. No written versioning
+    policy document was found.
+  policy_document: null
+sla:
+  published: false
+  note: >-
+    No public SLA. Expedia Group's APIs are partner-gated; commercial terms including any availability
+    commitment are negotiated per connectivity agreement.
+changelog:
+  published: false
+  note: >-
+    No dated public changelog for the developer platform was found. Release history is observable only
+    indirectly, through package registries — see packages/expedia-packages.yml.
+sdk_currency:
+  note: >-
+    The strongest decay signal available for this provider. Every first-party API client SDK was last
+    published in 2024 or 2025; the newest, xap-sdk 2.0.0-alpha, is dated 2025-06-05 and is still an
+    alpha, and the shared SDK foundation packages are all 0.0.x alphas from 2025-06-02. The only
+    first-party package released in 2026 is @expediagroup/expedia-openclaw (1.0.4, 2026-06-11), an
+    agent-integration plugin.
+deprecated_operations:
+  count: 0
+  basis: >-
+    Cannot be derived — no OpenAPI is published on any host probed for this record, and the partner
+    GraphQL endpoint returns 401 to anonymous introspection.

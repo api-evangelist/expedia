@@ -1,0 +1,132 @@
+generated: '2026-09-07'
+method: searched
+source: >-
+  Maven Central (search.maven.org/solrsearch, group com.expediagroup), the npm registry
+  (registry.npmjs.org, scope @expediagroup), PyPI (pypi.org/pypi/<name>/json), and the ExpediaGroup
+  GitHub organization repository listing (api.github.com/orgs/ExpediaGroup/repos).
+ownership: >-
+  These libraries are published by Expedia Group under the com.expediagroup Maven group, the
+  @expediagroup npm scope and the github.com/ExpediaGroup organization. Expedia (expedia.com) is a
+  brand of Expedia Group and this repository is the brand alias for that estate — the canonical
+  catalog of the underlying APIs is api-evangelist/expedia-group. Recorded here as the parent-brand
+  case: the client libraries a developer integrating any Expedia brand would install are Expedia
+  Group's, and Expedia Group publishes no separate expedia.com-branded SDK.
+note: >-
+  CURRENCY IS THE FINDING. Every first-party Expedia Group API SDK on a registry was last published
+  in 2024 or 2025 — the newest API client, xap-sdk, is a 2.0.0-alpha from 2025-06-05, and the shared
+  SDK foundation packages (expediagroup-sdk-core / -rest / -graphql) are all 0.0.x alphas. The only
+  package released in 2026 is @expediagroup/expedia-openclaw, an agent-facing search plugin, which
+  is where the investment moved.
+packages:
+- language: java
+  registry: maven
+  name: com.expediagroup:rapid-sdk
+  url: https://central.sonatype.com/artifact/com.expediagroup/rapid-sdk
+  install: 'implementation("com.expediagroup:rapid-sdk:5.4.0")'
+  official: true
+  version: 5.4.0
+  published: '2025-04-20'
+  note: Rapid (EPS) lodging API Java/Kotlin SDK — source at github.com/ExpediaGroup/rapid-java-sdk
+- language: java
+  registry: maven
+  name: com.expediagroup:fraudpreventionv2-sdk
+  url: https://central.sonatype.com/artifact/com.expediagroup/fraudpreventionv2-sdk
+  install: 'implementation("com.expediagroup:fraudpreventionv2-sdk:4.3.0")'
+  official: true
+  version: 4.3.0
+  published: '2025-03-27'
+  note: Fraud Prevention v2 API Java SDK
+- language: java
+  registry: maven
+  name: com.expediagroup:xap-sdk
+  url: https://central.sonatype.com/artifact/com.expediagroup/xap-sdk
+  install: 'implementation("com.expediagroup:xap-sdk:2.0.0-alpha")'
+  official: true
+  version: 2.0.0-alpha
+  published: '2025-06-05'
+  note: XAP (Expedia Affiliate Program) Java SDK — source at github.com/ExpediaGroup/xap-java-sdk. Alpha.
+- language: java
+  registry: maven
+  name: com.expediagroup:expediagroup-sdk-core
+  url: https://central.sonatype.com/artifact/com.expediagroup/expediagroup-sdk-core
+  install: 'implementation("com.expediagroup:expediagroup-sdk-core:0.0.10-alpha")'
+  official: true
+  version: 0.0.10-alpha
+  published: '2025-06-02'
+  note: Shared foundation the generated Expedia Group Java SDKs build on. Alpha.
+- language: java
+  registry: maven
+  name: com.expediagroup:expediagroup-sdk-rest
+  url: https://central.sonatype.com/artifact/com.expediagroup/expediagroup-sdk-rest
+  install: 'implementation("com.expediagroup:expediagroup-sdk-rest:0.0.13-alpha")'
+  official: true
+  version: 0.0.13-alpha
+  published: '2025-06-02'
+  note: REST transport layer for the Expedia Group Java SDK foundation. Alpha.
+- language: java
+  registry: maven
+  name: com.expediagroup:expediagroup-sdk-graphql
+  url: https://central.sonatype.com/artifact/com.expediagroup/expediagroup-sdk-graphql
+  install: 'implementation("com.expediagroup:expediagroup-sdk-graphql:0.0.8-alpha")'
+  official: true
+  version: 0.0.8-alpha
+  published: '2025-06-02'
+  note: >-
+    GraphQL transport for the Expedia Group Java SDK foundation — corroborating evidence that the
+    partner GraphQL surface at api.expediagroup.com/supply/lodging/graphql is real. Alpha.
+- language: javascript
+  registry: npm
+  name: "@expediagroup/fraudpreventionv2-sdk"
+  url: https://www.npmjs.com/package/@expediagroup/fraudpreventionv2-sdk
+  install: npm install @expediagroup/fraudpreventionv2-sdk
+  official: true
+  version: 5.0.0
+  published: '2024-02-20'
+- language: javascript
+  registry: npm
+  name: "@expediagroup/lodging-connectivity-sdk"
+  url: https://www.npmjs.com/package/@expediagroup/lodging-connectivity-sdk
+  install: npm install @expediagroup/lodging-connectivity-sdk
+  official: true
+  version: 0.0.2
+  published: '2024-09-29'
+  note: Node.js client for the lodging connectivity GraphQL operations. Two years since last release.
+- language: javascript
+  registry: npm
+  name: "@expediagroup/expedia-openclaw"
+  url: https://www.npmjs.com/package/@expediagroup/expedia-openclaw
+  install: npm install @expediagroup/expedia-openclaw
+  official: true
+  version: 1.0.4
+  published: '2026-06-11'
+  note: >-
+    "OpenClaw plugin for live hotel and flight search via Expedia Travel Adapter" —
+    github.com/ExpediaGroup/expedia-openclaw. The most recently published first-party package and the
+    only 2026 release; an agent-integration plugin rather than a general API client.
+- language: python
+  registry: pypi
+  name: expedia-travel-recommendations-mcp
+  url: https://pypi.org/project/expedia-travel-recommendations-mcp/
+  install: uvx expedia_travel_recommendations_mcp --protocol "stdio"
+  official: true
+  version: 1.0.2
+  published: '2025-08-28'
+  note: >-
+    The MCP server package, not a REST client. Apache-2.0. See mcp/expedia-mcp.yml.
+rejected:
+- name: rapid-sdk (PyPI)
+  url: https://pypi.org/project/rapid-sdk/
+  reason: >-
+    OWNERSHIP CHECK FAILED — the PyPI package named rapid-sdk is "A python sdk for the rAPId API"
+    by Lewis Card <lcard@no10.gov.uk>, homepage github.com/no10ds/rapid. It belongs to the UK
+    Cabinet Office, not Expedia Group, and shares only the name of Expedia's Rapid product.
+- name: com.expediagroup:graphql-kotlin-* (Maven, 21 artifacts, 9.0.0-alpha.8, 2025-05-08)
+  reason: >-
+    Genuinely first-party Expedia Group open source, but a general-purpose GraphQL server framework
+    for Kotlin, not a client library for any Expedia API. Excluded so sdk_count reflects API clients.
+- name: com.expediagroup beekeeper / drone-fly / rhapsody / bull / apiary
+  reason: First-party open source infrastructure projects, unrelated to the travel APIs.
+counts:
+  official: 10
+  languages: [java, javascript, python]
+  registries: [maven, npm, pypi]
