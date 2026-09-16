@@ -1,0 +1,11 @@
+{
+  "repo": "expedia",
+  "feeds": [
+    {
+      "source": "https://www.expedia.com/helpcenter",
+      "error": "HTTPError"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-09-13T13:00:00Z"
+}
