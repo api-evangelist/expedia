@@ -1,7 +1,9 @@
 ---
 title: 'Expedia Group Reveals ''The AI Trust Gap'': Travelers ...'
 url: https://www.businesswire.com/news/home/20260414532485/en/Expedia-Group-Reveals-The-AI-Trust-Gap-Travelers-Embrace-AI-for-Planning-but-Rely-on-Trusted-Brands-to-Book
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Expedia" press release artificial intelligence'
 position: 4
 source: serpapi-google

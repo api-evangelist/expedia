@@ -1,7 +1,9 @@
 ---
 title: 'Put Your Trip on Autopilot: Expedia Group Introduces New ...'
 url: https://www.expedia.com/newsroom/spring-product-release-2024/
-date: '2026-05-25'
+published: ''
+date_basis: harvested
+harvested: '2026-05-25'
 query: '"Expedia" press release artificial intelligence'
 position: 2
 source: serpapi-google
